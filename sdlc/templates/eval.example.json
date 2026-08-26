@@ -1,0 +1,13 @@
+{
+  "id": "eval-0001-status-endpoint",
+  "source": "incident-2026-07-14",
+  "prompt": "Add a `next_step` field to the claim status endpoint response, following the repo conventions.",
+  "allowed_tools": "Read,Edit,Bash(make test)",
+  "checks": [
+    { "type": "command", "run": "make test", "expect_exit": 0 },
+    { "type": "command", "run": "make lint", "expect_exit": 0 },
+    { "type": "grep", "path": "claims-api/routes/status.py", "expect": "next_step" },
+    { "type": "not_grep", "path": "claims-api/routes/status.py", "expect": "print(" },
+    { "type": "policy", "skill": "secure-api-review", "expect": "audit event emitted" }
+  ]
+}

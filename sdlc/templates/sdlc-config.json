@@ -1,0 +1,28 @@
+{
+  "artifact_dir": "sdlc",
+  "drive": "off",
+  "gates": {
+    "test_lock": {
+      "enabled": true,
+      "test_globs": ["**/test_*.py", "**/*_test.go", "**/*.test.*", "**/*.spec.*", "**/tests/**", "**/__tests__/**"]
+    },
+    "protected_paths": {
+      "enabled": true,
+      "paths": ["**/generated/**", "**/*.pb.go", "**/migrations/**", ".github/workflows/**"]
+    },
+    "production_gate": {
+      "enabled": true,
+      "match": ["deploy*prod", "prod*deploy", "kubectl*production", "terraform apply"],
+      "approval_env": "SDLC_RELEASE_APPROVAL"
+    },
+    "irreversible": {
+      "enabled": true,
+      "match": ["git push --force", "git push -f", "git reset --hard", "rm -rf /", "DROP TABLE", "TRUNCATE"]
+    },
+    "plan_sync": {
+      "enabled": true,
+      "exempt": ["CLAUDE.md", "REVIEW.md", "evals/**", ".claude/**"]
+    }
+  },
+  "format_command": null
+}

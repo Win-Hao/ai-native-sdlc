@@ -1,0 +1,34 @@
+# Regression-test the configuration that steers the agent, the way code is tested.
+# A skill or CLAUDE.md edit that drops the pass rate gets reviewed before it merges.
+name: Agent evals
+
+on:
+  pull_request:
+    paths: ['CLAUDE.md', 'REVIEW.md', '.claude/**', '.sdlc/**', 'evals/**']
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Run eval suite
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          pass=0; total=0
+          for eval in evals/*.json; do
+            total=$((total+1))
+            claude -p "$(jq -r '.prompt' "$eval")" \
+              --allowedTools "$(jq -r '.allowed_tools' "$eval")" \
+              --output-format json > result.json
+            if ./evals/check.sh "$eval" result.json; then pass=$((pass+1)); fi
+            git checkout -- . 2>/dev/null || true
+          done
+          echo "pass_rate=$pass/$total" | tee -a "$GITHUB_STEP_SUMMARY"
+          # The gate: adjust the threshold to your suite's established baseline.
+          [ "$pass" -ge "$(( total * 8 / 10 ))" ]
