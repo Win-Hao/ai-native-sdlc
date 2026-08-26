@@ -1,5 +1,7 @@
 # AI-Native SDLC for Claude Code
 
+中文 · [English](README.en.md)
+
 把 [The AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) 的六个阶段做成
 Claude Code 插件：**14 条命令、3 个 agent、一套产物模板**。命令随时打，打了就把产物写进
 `sdlc/<id>/`；闸门（hook）和自动驱动都是可选项，默认关。
