@@ -1,6 +1,6 @@
 {
   "name": "ai-native-sdlc",
-  "owner": { "name": "huangyonghao" },
+  "owner": { "name": "Win-Hao" },
   "description": "The AI-native SDLC playbook as installable Claude Code tooling: six stages, an artifact chain, and deterministic gates.",
   "version": "1.1.0",
   "plugins": [
