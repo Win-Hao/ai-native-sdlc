@@ -91,9 +91,9 @@ art plan.md 'status: approved'
 contains "build next" "$(context prompt-context)" "Current stage: build. Next: /sdlc:build"
 art plan.md 'status: implemented'
 C=$(context prompt-context); contains "review next" "$C" "Current stage: review"; contains "verify rides along" "$C" "/sdlc:verify then /sdlc:review"
-art review.md 'status: reviewed'
+art findings.md 'status: reviewed'
 C=$(context prompt-context); contains "gates met" "$C" "All artifact gates met"; contains "done offered" "$C" "/sdlc:done"
-rm sdlc/0001-x/review.md
+rm sdlc/0001-x/findings.md
 
 echo "== stop hook: speaks only when the state changes"
 rm -f .sdlc/.laststate

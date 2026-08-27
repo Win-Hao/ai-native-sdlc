@@ -41,7 +41,7 @@
   },
   {
     "id": "review",
-    "artifact": "review.md",
+    "artifact": "findings.md",
     "done_when": "reviewed",
     "command": "/sdlc:review",
     "draft_hint": null

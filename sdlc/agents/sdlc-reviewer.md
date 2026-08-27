@@ -18,7 +18,8 @@ Read `REVIEW.md` at the repo root and run exactly the passes it defines. If
   a spec or plan, compliance is against what the user asked for and `CLAUDE.md`.
 
 Rules:
-- Tag every finding with its pass.
+- Tag every finding with its pass, and with a class — a stable slug from
+  `REVIEW.md` "Classes" (reuse before inventing) — so repeats can be counted.
 - Reserve **Important** for findings that break behavior, leak data, or breach a
   policy. Everything else is a nit, capped per `REVIEW.md`.
 - Report nothing that CI already enforces, and nothing in excluded paths.

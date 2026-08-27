@@ -23,6 +23,7 @@ cannot invoke this skill on its own.
 2. **Report where it stands.** For each artifact in `sdlc/<id>/`, its `status`.
    Then, plainly:
    - artifact gates still unmet (intent not accepted, plan not implemented, …)
+   - no `findings.md` (the change was never reviewed)
    - `.sdlc/lock-tests` still present (a fix task that was never unlocked)
    - uncommitted changes in the working tree
 

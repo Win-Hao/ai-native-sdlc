@@ -69,7 +69,7 @@ production deploy).
 | `/sdlc:build [tdd]` | `plan.md` | the diff; deviations recorded in the same commit; `tdd` = each slice's red tests committed alone → lock → green |
 | `/sdlc:fix` | the symptom you describe | a failing test committed before the fix, then the fix |
 | `/sdlc:verify` | `plan.md` Proof | literal build/test/lint output, Proof item by item, `sdlc-verifier` verdict |
-| `/sdlc:review` | `REVIEW.md` + spec + plan | three passes of findings + a machine-readable tally |
+| `/sdlc:review` | `REVIEW.md` + spec + plan + earlier `findings.md` files | `findings.md`: three passes of findings, each with a class and its repeat count; 2nd occurrence → a CLAUDE.md line, 3rd → a hook or skill proposed |
 | `/sdlc:done` | — | `closed:` / `outcome:` in `intent.md`, `.sdlc/current` cleared |
 | `/sdlc:status` | `sdlc/<id>/` | where the change stands and the usual next step |
 | `/sdlc:gate` | `.sdlc/config.json` | audit / add gates / prove a gate fires |
@@ -87,6 +87,7 @@ sdlc/0001-claims-status/
   intent.md    status: draft → accepted | rejected
   spec.md      status: draft → accepted
   plan.md      status: draft → approved → implemented
+  findings.md  review findings + tally; repeats counted across changes
 .sdlc/current  the active change id
 ```
 

@@ -17,6 +17,7 @@ allowed-tools: Read Glob Grep Bash(git status:*) Bash(git log:*) Bash(cat:*) Bas
    | `intent.md` | 1 Plan | frontmatter `status`, or missing |
    | `spec.md` | 2 Design | `status`, plus count of **open** flagged concerns |
    | `plan.md` | 3 Build | `status`, plus whether `Deviations` is non-empty |
+   | `findings.md` | 5 Deploy | `reviewed` date and `important` / `nits`; missing = not reviewed |
 
 3. Report the working state:
    - `git status --short` — is the diff consistent with `plan.md` "Files that change"? Name any file changed that the plan did not name.

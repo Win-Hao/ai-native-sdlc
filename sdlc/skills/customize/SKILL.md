@@ -40,7 +40,7 @@ list in `.sdlc/config.json`. Each entry:
 | Field | Meaning |
 |---|---|
 | `id` | Stage name shown in the driver |
-| `artifact` | File in `sdlc/<id>/` whose frontmatter `status` is the gate. `null` = a trailing action with no artifact gate (like verify, review) |
+| `artifact` | File in `sdlc/<id>/` whose frontmatter `status` is the gate. `null` = an action with no artifact to observe (like verify); the driver carries it as "then" into the next stage's Next |
 | `done_when` | The `status` value that opens the next stage |
 | `command` | What the agent runs for this stage — a plugin skill or **any project skill** |
 | `draft_hint` | Shown while the gate is unmet. **Present = a human moves this gate. `null` = an agent action that just has not run yet.** |

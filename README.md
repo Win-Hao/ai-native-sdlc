@@ -63,7 +63,7 @@ cd <你的项目> && claude
 | `/sdlc:build [tdd]` | `plan.md` | diff；偏离计划时同一提交回填 Deviations；`tdd` = 每片红测试单独提交 → 锁 → 绿 |
 | `/sdlc:fix` | 你描述的症状 | 失败测试（提交在修复之前）+ 修复 |
 | `/sdlc:verify` | `plan.md` 的 Proof | 原始 build/test/lint 输出、逐条 Proof、`sdlc-verifier` 复核 |
-| `/sdlc:review` | `REVIEW.md` + spec + plan | 三遍 findings + 机器可读 tally |
+| `/sdlc:review` | `REVIEW.md` + spec + plan + 以前的 `findings.md` | `findings.md`：三遍 findings、每条带 class、同类第几次出现；第 2 次写进 CLAUDE.md，第 3 次起提议 hook 或 skill |
 | `/sdlc:done` | — | `intent.md` 记 `closed:` / `outcome:`，清空 `.sdlc/current` |
 | `/sdlc:status` | `sdlc/<id>/` | 这个变更走到哪、通常下一步 |
 | `/sdlc:gate` | `.sdlc/config.json` | 审计 / 加闸门 / 证明闸门会响 |
@@ -80,6 +80,7 @@ sdlc/0001-claims-status/
   intent.md    status: draft → accepted | rejected
   spec.md      status: draft → accepted
   plan.md      status: draft → approved → implemented
+  findings.md  review 结果 + tally；同类 finding 跨变更计数
 .sdlc/current  当前变更 id
 ```
 

@@ -31,6 +31,14 @@ Compare the diff against `plan.md`:
 - Steps in the plan with no corresponding change → report as Important.
 - The plan's "Proof" section not satisfied → report as Important.
 
+## Classes
+Stable names for kinds of finding, so repeats can be counted across reviews
+(`sdlc/*/findings.md`). Reuse before inventing; add new ones here in the same commit.
+
+- unplanned-file — a file changed that plan.md does not name
+- test-weakened — a test edited, deleted or loosened to make it pass
+- <class-slug> — <one line>
+
 ## Output
 End with a machine-readable tally:
 

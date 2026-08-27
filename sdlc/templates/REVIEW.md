@@ -1,29 +1,47 @@
----
-id: <NNNN-slug>
-stage: deploy
-status: reviewed
-reviewed: <YYYY-MM-DD>
-base: <what the diff was taken against — a branch, a PR number, a commit>
-important: <n>
-nits: <n>
----
+# Review instructions
 
-# Review: <title>
+## Passes
+Run three passes and tag each finding with its pass:
 
-| # | Pass | Severity | Class | Where | Finding | Status |
-|---|---|---|---|---|---|---|
-| F1 | bugs / security / compliance | Important / nit | <class-slug from REVIEW.md> | `path:line` | <inputs or state → wrong output or crash> | open / fixed / accepted: <why> |
+- **Bugs**: logic errors, broken edge cases, subtle regressions, race conditions,
+  unhandled error paths.
+- **Security**: injection risks, authentication and authorization gaps, PII in logs
+  or error messages, secrets in the diff, unsafe deserialization.
+- **Compliance**: the change against `spec.md` — requirements missing or partial,
+  behaviour nobody asked for (scope creep), requirements that look implemented
+  but wrong, quoting the spec line for each — and against `plan.md` (including
+  its "Files that change" list), `CLAUDE.md` and the repo's skills.
 
-<Every Important finding; nits up to the cap in REVIEW.md, the rest counted below.>
+## What Important means here
+Reserve **Important** for findings that would break behavior, leak data, or breach
+a policy. Style and naming are nits.
 
-## Repeats
-<Per class seen in an earlier review: which occurrence this is, the changes it
-appeared in, and what was done — a CLAUDE.md line (2nd), a hook or skill
-proposed (3rd+). "None" when every class is new.>
+## Cap the nits
+Report at most five nits per review; summarize the rest as a count.
 
-## Not listed
-<n> nits below the cap.
+## Do not report
+- Generated files under `<generated paths>`
+- Anything CI already enforces (formatting, lint, type errors)
+- Test coverage percentages
 
-## CLAUDE.md
-<Lines added to "Things Claude gets wrong", or "unchanged". Anything this change
-made outdated.>
+## Plan compliance
+Compare the diff against `plan.md`:
+- Files changed that the plan did not name → report as Important unless
+  `plan.md` "Deviations" explains it.
+- Steps in the plan with no corresponding change → report as Important.
+- The plan's "Proof" section not satisfied → report as Important.
+
+## Classes
+Stable names for kinds of finding, so repeats can be counted across reviews
+(`sdlc/*/findings.md`). Reuse before inventing; add new ones here in the same commit.
+
+- unplanned-file — a file changed that plan.md does not name
+- test-weakened — a test edited, deleted or loosened to make it pass
+- <class-slug> — <one line>
+
+## Output
+End with a machine-readable tally:
+
+```
+IMPORTANT=<n> NITS=<n> PASSES=bugs,security,compliance
+```

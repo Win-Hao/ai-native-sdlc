@@ -1,6 +1,6 @@
 ---
 name: review
-description: Stage 5 Deploy (a) — run the REVIEW.md passes over the change (bugs, security, compliance against spec.md and plan.md), rank findings by severity, tag each with a class, count repeats across earlier reviews, record the result as sdlc/<id>/review.md, and turn repeats into a CLAUDE.md line, a hook or a skill.
+description: Stage 5 Deploy (a) — run the REVIEW.md passes over the change (bugs, security, compliance against spec.md and plan.md), rank findings by severity, tag each with a class, count repeats across earlier reviews, record the result as sdlc/<id>/findings.md, and turn repeats into a CLAUDE.md line, a hook or a skill.
 when_to_use: When the user runs /sdlc:review or asks for a review of a diff, branch or PR, or when this repo's SDLC driver is on (`drive: auto`) and a change is verified.
 argument-hint: "[PR number | branch | diff]"
 allowed-tools: Read Write Edit Glob Grep Bash(git:*) Bash(gh:*) Bash(rg:*) Bash(grep:*) Bash(mkdir:*) Bash(date:*)
@@ -51,7 +51,7 @@ whether the change does what the plan intended and whether the risk is acceptabl
    keeps the same name.
 
 6. **Count repeats.** For each class, look through earlier records:
-   `grep -l "| <class> |" sdlc/*/review.md sdlc/_reviews/*.md`, excluding this
+   `grep -l "| <class> |" sdlc/*/findings.md sdlc/_reviews/*.md`, excluding this
    change. Report the count and where — "3rd occurrence: 0004, 0007" — then
    act on it:
    - **2nd**: put the correction into `CLAUDE.md` "Things Claude gets wrong" as
@@ -66,8 +66,8 @@ whether the change does what the plan intended and whether the risk is acceptabl
 
    Also flag when the change has made `CLAUDE.md` outdated.
 
-7. **Record it.** Write `sdlc/<id>/review.md` from `.sdlc/templates/review.md`
-   if the project has one, otherwise `${CLAUDE_PLUGIN_ROOT}/templates/review.md`:
+7. **Record it.** Write `sdlc/<id>/findings.md` from `.sdlc/templates/findings.md`
+   if the project has one, otherwise `${CLAUDE_PLUGIN_ROOT}/templates/findings.md`:
    every Important finding and the listed nits with their class, the repeat
    counts, the tally. Without an active change (an arbitrary PR), write
    `sdlc/_reviews/<YYYY-MM-DD>-<slug>.md` so the count still works. Commit:
