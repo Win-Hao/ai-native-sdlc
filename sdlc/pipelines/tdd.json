@@ -1,12 +1,42 @@
 [
-  { "id": "intent", "artifact": "intent.md", "done_when": "accepted",   "command": "/sdlc:intent",
-    "draft_hint": "Review it — set status: accepted to open the next stage, or reject it." },
-  { "id": "spec",   "artifact": "spec.md",   "done_when": "accepted",   "command": "/sdlc:spec",
-    "draft_hint": "Resolve its flagged concerns with their policy owners, then set status: accepted." },
-  { "id": "plan",   "artifact": "plan.md",   "done_when": "approved",   "command": "/sdlc:plan",
-    "draft_hint": "Interrogate the plan. Its Proof section becomes the tests, so check it is specific enough to write from." },
-  { "id": "build",  "artifact": "plan.md",   "done_when": "implemented","command": "/sdlc:build tdd",
-    "draft_hint": null },
-  { "id": "verify", "artifact": null, "command": "/sdlc:verify" },
-  { "id": "review", "artifact": null, "command": "/sdlc:review" }
+  {
+    "id": "intent",
+    "artifact": "intent.md",
+    "done_when": "accepted",
+    "command": "/sdlc:intent",
+    "draft_hint": "Review it — set status: accepted to open the next stage, or reject it."
+  },
+  {
+    "id": "spec",
+    "artifact": "spec.md",
+    "done_when": "accepted",
+    "command": "/sdlc:spec",
+    "draft_hint": "Resolve its flagged concerns with their policy owners, then set status: accepted."
+  },
+  {
+    "id": "plan",
+    "artifact": "plan.md",
+    "done_when": "approved",
+    "command": "/sdlc:plan",
+    "draft_hint": "Interrogate the plan. Its Proof section becomes the tests, so check it is specific enough to write from."
+  },
+  {
+    "id": "build",
+    "artifact": "plan.md",
+    "done_when": "implemented",
+    "command": "/sdlc:build tdd",
+    "draft_hint": null
+  },
+  {
+    "id": "verify",
+    "artifact": null,
+    "command": "/sdlc:verify"
+  },
+  {
+    "id": "review",
+    "artifact": "review.md",
+    "done_when": "reviewed",
+    "command": "/sdlc:review",
+    "draft_hint": null
+  }
 ]

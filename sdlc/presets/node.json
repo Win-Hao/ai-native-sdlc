@@ -109,8 +109,10 @@
     },
     {
       "id": "review",
-      "artifact": null,
-      "command": "/sdlc:review"
+      "artifact": "review.md",
+      "done_when": "reviewed",
+      "command": "/sdlc:review",
+      "draft_hint": null
     }
   ],
   "drive": "off"

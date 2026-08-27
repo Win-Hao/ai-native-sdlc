@@ -115,7 +115,7 @@ echo
 echo "-- artifact chain"
 if [ "$CFG" = "$LIVE" ]; then
   DIR=$(jq -r '.artifact_dir // "sdlc"' "$CFG")
-  [ -d "$DIR" ] && say "ok" "$DIR/ exists ($(ls -1 "$DIR" 2>/dev/null | wc -l | tr -d ' ') changes)" || { say "WARN" "no $DIR/ directory"; WARN=$((WARN+1)); }
+  [ -d "$DIR" ] && say "ok" "$DIR/ exists ($(ls -1 "$DIR" 2>/dev/null | grep -c '^[0-9]') changes)" || { say "WARN" "no $DIR/ directory"; WARN=$((WARN+1)); }
   [ -s .sdlc/current ] && say "ok" "active change: $(tr -d '[:space:]' < .sdlc/current)" || say "ok" "no active change — /sdlc:intent starts one"
 else
   say "skip" "preview — the artifact chain is checked once the config is live"

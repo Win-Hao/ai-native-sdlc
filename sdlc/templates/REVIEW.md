@@ -1,39 +1,29 @@
-# Review instructions
+---
+id: <NNNN-slug>
+stage: deploy
+status: reviewed
+reviewed: <YYYY-MM-DD>
+base: <what the diff was taken against — a branch, a PR number, a commit>
+important: <n>
+nits: <n>
+---
 
-## Passes
-Run three passes and tag each finding with its pass:
+# Review: <title>
 
-- **Bugs**: logic errors, broken edge cases, subtle regressions, race conditions,
-  unhandled error paths.
-- **Security**: injection risks, authentication and authorization gaps, PII in logs
-  or error messages, secrets in the diff, unsafe deserialization.
-- **Compliance**: the change against `spec.md` — requirements missing or partial,
-  behaviour nobody asked for (scope creep), requirements that look implemented
-  but wrong, quoting the spec line for each — and against `plan.md` (including
-  its "Files that change" list), `CLAUDE.md` and the repo's skills.
+| # | Pass | Severity | Class | Where | Finding | Status |
+|---|---|---|---|---|---|---|
+| F1 | bugs / security / compliance | Important / nit | <class-slug from REVIEW.md> | `path:line` | <inputs or state → wrong output or crash> | open / fixed / accepted: <why> |
 
-## What Important means here
-Reserve **Important** for findings that would break behavior, leak data, or breach
-a policy. Style and naming are nits.
+<Every Important finding; nits up to the cap in REVIEW.md, the rest counted below.>
 
-## Cap the nits
-Report at most five nits per review; summarize the rest as a count.
+## Repeats
+<Per class seen in an earlier review: which occurrence this is, the changes it
+appeared in, and what was done — a CLAUDE.md line (2nd), a hook or skill
+proposed (3rd+). "None" when every class is new.>
 
-## Do not report
-- Generated files under `<generated paths>`
-- Anything CI already enforces (formatting, lint, type errors)
-- Test coverage percentages
+## Not listed
+<n> nits below the cap.
 
-## Plan compliance
-Compare the diff against `plan.md`:
-- Files changed that the plan did not name → report as Important unless
-  `plan.md` "Deviations" explains it.
-- Steps in the plan with no corresponding change → report as Important.
-- The plan's "Proof" section not satisfied → report as Important.
-
-## Output
-End with a machine-readable tally:
-
-```
-IMPORTANT=<n> NITS=<n> PASSES=bugs,security,compliance
-```
+## CLAUDE.md
+<Lines added to "Things Claude gets wrong", or "unchanged". Anything this change
+made outdated.>

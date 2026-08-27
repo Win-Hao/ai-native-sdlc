@@ -79,7 +79,7 @@ current_id() { [ -f "$ROOT/.sdlc/current" ] && tr -d '[:space:]' < "$ROOT/.sdlc/
 # Sets: PS_STATE (per-artifact status), PS_STAGE (current stage id),
 #       PS_NEXT (next action), PS_WAITING (1 if waiting on a human),
 #       PS_CHAIN (stage ids joined for display).
-DEFAULT_PIPELINE='[{"id":"intent","artifact":"intent.md","done_when":"accepted","command":"/sdlc:intent","draft_hint":"Review it — set status: accepted to open the next stage."},{"id":"spec","artifact":"spec.md","done_when":"accepted","command":"/sdlc:spec","draft_hint":"Resolve its flagged concerns, then set status: accepted."},{"id":"plan","artifact":"plan.md","done_when":"approved","command":"/sdlc:plan","draft_hint":"Interrogate it, then set status: approved."},{"id":"build","artifact":"plan.md","done_when":"implemented","command":"/sdlc:build","draft_hint":null},{"id":"verify","artifact":null,"command":"/sdlc:verify"},{"id":"review","artifact":null,"command":"/sdlc:review"}]'
+DEFAULT_PIPELINE='[{"id":"intent","artifact":"intent.md","done_when":"accepted","command":"/sdlc:intent","draft_hint":"Review it — set status: accepted to open the next stage."},{"id":"spec","artifact":"spec.md","done_when":"accepted","command":"/sdlc:spec","draft_hint":"Resolve its flagged concerns, then set status: accepted."},{"id":"plan","artifact":"plan.md","done_when":"approved","command":"/sdlc:plan","draft_hint":"Interrogate it, then set status: approved."},{"id":"build","artifact":"plan.md","done_when":"implemented","command":"/sdlc:build","draft_hint":null},{"id":"verify","artifact":null,"command":"/sdlc:verify"},{"id":"review","artifact":"review.md","done_when":"reviewed","command":"/sdlc:review","draft_hint":null}]'
 
 # Unit separator, not tab: an IFS of whitespace collapses empty fields.
 US=$'\x1f'
@@ -124,12 +124,15 @@ pipeline_state() {  # $1 = absolute artifact dir of the active change
     echo "-1"
   }
 
-  local resolved=0 i
+  # Stages with no artifact (verify) cannot be observed, so they are carried as
+  # "then" into the next artifact stage's Next, and dropped once a later stage
+  # is met.
+  local resolved=0 i pending=""
   for i in "${!ids[@]}"; do
     art="${arts[$i]}"
     if [ -z "$art" ]; then
-      [ -z "$tail_cmds" ] && tail_cmds="${cmds[$i]}" || tail_cmds="$tail_cmds then ${cmds[$i]}"
-      continue
+      [ "$resolved" = 1 ] && continue
+      pending="${pending:+$pending then }${cmds[$i]}"; continue
     fi
     st=$(artifact_status "$A/$art"); [ -z "$st" ] && st="-"
     case "$US$seen_arts$US" in
@@ -140,24 +143,22 @@ pipeline_state() {  # $1 = absolute artifact dir of the active change
     local mine cur
     mine=$(progress_idx "$art" "${dws[$i]}")
     cur=$(progress_idx "$art" "$st")
-    if [ "$st" = "-" ]; then
-      PS_STAGE="${ids[$i]}"; PS_NEXT="${cmds[$i]}"; resolved=1
-    elif [ "$cur" -lt "$mine" ]; then
+    if [ "$st" = "-" ] || [ "$cur" -lt "$mine" ]; then
       PS_STAGE="${ids[$i]}"; resolved=1
       # A draft_hint means a human has to move this gate. No hint means the
       # stage is an agent action that simply has not run yet.
-      if [ -n "${hints[$i]}" ]; then
+      if [ "$st" != "-" ] && [ -n "${hints[$i]}" ]; then
         PS_WAITING=1; PS_NEXT="${hints[$i]}"
       else
-        PS_NEXT="${cmds[$i]}"
+        PS_NEXT="${pending:+$pending then }${cmds[$i]}"
       fi
+    else
+      pending=""
     fi
   done
   if [ "$resolved" = 0 ]; then
-    # Trailing stages (verify, review) have no artifact to check, so the driver
-    # keeps naming them until the human closes the change with /sdlc:done.
     PS_STAGE="done"
-    PS_NEXT="${tail_cmds:+$tail_cmds, then }/sdlc:done to close the change"
+    PS_NEXT="${pending:+$pending, then }/sdlc:done to close the change"
   fi
   PS_STATE="${PS_STATE% }"
 }
