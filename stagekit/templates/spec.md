@@ -58,11 +58,13 @@ this section.>
 
 ## ⚠ Flagged concerns
 <The most important section. Policies that cannot both be satisfied, and
-decisions that need an owner who is not you.>
+decisions that need an owner who is not you. A concern freezes only the
+requirements in its Blocks column; requirements no open concern touches are
+clear to plan and build now.>
 
-| # | Concern | Policy owner | Status |
-|---|---|---|---|
-| C1 | <conflict or risk> | <who decides> | open / resolved: <decision> |
+| # | Concern | Blocks | Policy owner | Status |
+|---|---|---|---|---|
+| C1 | <conflict or risk> | <requirement ids this freezes, e.g. R2 R5> | <who decides> | open / resolved: <decision> |
 
 ## Answers to intent open questions
 <Answer each open question from intent.md. For any you cannot, say why, and

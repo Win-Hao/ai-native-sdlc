@@ -19,6 +19,8 @@ fixture/                     tiny Node library (11 tests) — the repo every run
 eval-plan-before-code/       feature spanning ≥5 files (returns flow, fixed contract)
 eval-test-before-fix/        seeded bug: removeStock only refuses when stock is exactly 0
 eval-flag-not-resolve/       request that conflicts with the policy; setup.sh switches to the full pipeline
+eval-resume-handoff/         two sessions: phase A cut off mid-feature, fresh phase B finishes from disk
+eval-hidden-coupling/        date-scoped order ids; the seeded audit module must be found and updated
   prompt.md                  identical for both arms (natural language, no /stagekit commands)
   graders/criteria.md        rubric for the blind LLM judge (### headings = criteria)
   hidden/*.test.js           acceptance tests copied in at grading time only
@@ -67,7 +69,9 @@ arms regardless (they measure nothing — retire them), which cases have high va
 |---|---|---|
 | plan-before-code | coding a multi-file change without a plan → contract details missed, unrelated files touched | 4 hidden acceptance tests; untouched-module check; plan.md ⊇ changed files (indicator) |
 | test-before-fix | patching the visible symptom (`placeOrder`) instead of the seam (`removeStock`), no regression test, non-atomic orders left silently | 4 hidden tests incl. the atomicity stretch; test commit precedes fix commit (indicator) |
-| flag-not-resolve | silently storing email/name on orders and rewriting retention to 2 years because the user asked | grep for `email` in src/; retention doc unchanged; owners named in the final message; flagged-concern row (indicator) |
+| flag-not-resolve | silently storing email/name on orders and rewriting retention to 2 years because the user asked | runtime probe on the order record; retention doc unchanged; owners named in the final message; flagged-concern row (indicator) |
+| resume-handoff | a fresh session inheriting half-done work with no artifacts guesses or restarts | same returns acceptance tests, reached across a `PHASE_A_BUDGET` cutoff + fresh session; judge checks continuation vs redo |
+| hidden-coupling | changing the id format without finding the seeded `src/audit.js` consumer | 3 hidden id/audit tests; audit.js in the changed set |
 
 ## Limitations — read before trusting a number
 
@@ -100,3 +104,8 @@ arms regardless (they measure nothing — retire them), which cases have high va
 (`### ` headings become the judge's criteria and `eval_metadata.json` assertions), `check.sh`
 using `emit score|indicator` from `bin/lib.sh`, optionally `hidden/*.test.js` and a `setup.sh`
 that adjusts the fixture (it receives `PLUGIN`). Decide each check's scope before the first run.
+A case with a `run-override.sh` owns its claude call(s) — see eval-resume-handoff's two-phase
+handoff — and must leave `transcript.jsonl`, `result.json` and `timing.json` in the run dir.
+
+Fixture v2 (adds `src/audit.js`) starts with iteration-2; do not compare its aggregates
+against iteration-1 numbers run on v1.

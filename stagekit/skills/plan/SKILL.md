@@ -15,8 +15,11 @@ still a matter of editing a document. Produce `stagekit/<id>/plan.md`.
 
 ## Inputs
 
-`stagekit/<id>/spec.md` when there is one (open flagged concerns: name them and ask
-whether to go on), else `intent.md`, else the conversation — say which. If the
+`stagekit/<id>/spec.md` when there is one. Open flagged concerns block only the
+requirements in their Blocks column: plan the clear requirements, list the
+blocked ones under a **Deferred pending owners** line in the Problem paragraph
+with their owners, and only when every requirement is blocked stop and say so.
+Else `intent.md`, else the conversation — say which. If the
 upstream artifact is not accepted, say so; the user decides. Without any
 artifact, allocate the id and set `.stagekit/current` yourself, and put a short
 Problem paragraph at the top of the plan so it stands alone.

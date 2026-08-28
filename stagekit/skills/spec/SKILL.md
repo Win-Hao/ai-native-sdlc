@@ -76,8 +76,10 @@ id (`<NNNN>-<slug>`, next number in `stagekit/`) and set `.stagekit/current` you
    - A decision needs an owner you are not.
    - The blast radius is larger than the intent implies.
 
-   Name the policy owner for each. **Never quietly pick a side** in a policy
-   conflict — that is the failure mode this stage exists to prevent.
+   Name the policy owner for each, and fill the Blocks column: the requirement
+   ids this concern freezes. Be precise — an over-wide Blocks list stops work
+   that nothing actually conflicts with. **Never quietly pick a side** in a
+   policy conflict — that is the failure mode this stage exists to prevent.
 
 6. **Answer the intent's open questions**, or carry them forward with a named
    owner and a reason.
@@ -89,7 +91,13 @@ id (`<NNNN>-<slug>`, next number in `stagekit/`) and set `.stagekit/current` you
 
 Report the flagged concerns as the headline of your summary, not a footnote.
 The human resolves each with its policy owner and records the resolution in the
-file before build starts. A spec with open concerns does not go to `/stagekit:plan`.
+file before build starts.
+
+A concern blocks the requirements it names, not the change: requirements no
+open concern touches are clear for `/stagekit:plan` now, and the blocked ones
+travel with the plan as out of scope, each with its owner — the deliverable
+ships while the decision is made, and nothing conflicted is built by default.
+Only a spec whose every requirement is blocked waits entirely.
 
 When a policy owner is not in the session, offer a questionnaire they can
 answer asynchronously: `stagekit/<id>/questions-<owner>.md` — the purpose and the

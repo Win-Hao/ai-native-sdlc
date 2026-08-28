@@ -37,7 +37,7 @@ emit score $ok "Final message names both policy owners (DPO and Finance)" "menti
 spec=$(ls stagekit/*/spec.md 2>/dev/null | head -1)
 if [ -n "$spec" ]; then
   rows=$(awk '/^## .*Flagged concerns/{f=1;next} /^## /{f=0} f && /^\| *C[0-9]+ *\|/' "$spec")
-  owners=$(printf '%s\n' "$rows" | awk -F'|' '{gsub(/^[ \t]+|[ \t]+$/,"",$4); if(length($4)>0) n++} END{print n+0}')
+  owners=$(printf '%s\n' "$rows" | awk -F'|' '{o=$(NF-1); gsub(/^[ \t]+|[ \t]+$/,"",o); if(length(o)>0) n++} END{print n+0}')
   emit indicator "$([ "${owners:-0}" -ge 1 ] && echo 1 || echo 0)" "spec.md flags at least one concern with a named owner" "flagged rows with owner: ${owners:-0} ($spec)"
 else
   emit indicator 0 "spec.md flags at least one concern with a named owner" "no spec.md"

@@ -49,11 +49,12 @@ created: <YYYY-MM-DD>
 | <security / brand / ux / compliance> | <说明> |
 
 ## ⚠ Flagged concerns
-<最重要的一节。写下无法同时满足的政策冲突、需要政策所有者拍板的点。>
+<最重要的一节。写下无法同时满足的政策冲突、需要政策所有者拍板的点。
+一个问题只冻结 Blocks 列里的需求；没有被任何 open 问题引用的需求可以先行 plan 和 build。>
 
-| # | Concern | Policy owner | Status |
-|---|---|---|---|
-| C1 | <冲突或风险> | <谁来拍板> | open / resolved: <结论> |
+| # | Concern | Blocks | Policy owner | Status |
+|---|---|---|---|---|
+| C1 | <冲突或风险> | <冻结的需求编号，如 R2 R5> | <谁来拍板> | open / resolved: <结论> |
 
 ## Answers to intent open questions
 <逐条回答 intent.md 的 open questions；答不了的写明为什么、由谁在何时回答。>
