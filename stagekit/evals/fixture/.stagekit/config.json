@@ -1,0 +1,21 @@
+{
+  "_preset": "node",
+  "_gate_level": "minimal",
+  "_note": "Eval fixture: test_lock is on so the test-first fix path is enforced; plan_sync is off because its `ask` cannot be answered in a headless run.",
+  "artifact_dir": "stagekit",
+  "gates": {
+    "test_lock": { "enabled": true, "test_globs": ["tests/**"] },
+    "protected_paths": { "enabled": false, "paths": ["package-lock.json"] },
+    "production_gate": { "enabled": false, "match": [], "approval_env": "STAGEKIT_RELEASE_APPROVAL" },
+    "irreversible": { "enabled": true, "match": ["git push --force", "git push -f", "git reset --hard", "git clean -fdx", "rm -rf /"] },
+    "plan_sync": { "enabled": false, "exempt": ["CLAUDE.md", "REVIEW.md", "evals/**", ".claude/**"] }
+  },
+  "format_command": null,
+  "pipeline": [
+    { "id": "intent", "artifact": "intent.md", "done_when": "accepted", "command": "/stagekit:intent", "draft_hint": "Read it back. Set status: accepted when it says what you actually want." },
+    { "id": "plan", "artifact": "plan.md", "done_when": "approved", "command": "/stagekit:plan", "draft_hint": "Interrogate the plan, then set status: approved." },
+    { "id": "build", "artifact": "plan.md", "done_when": "implemented", "command": "/stagekit:build", "draft_hint": null },
+    { "id": "verify", "artifact": null, "command": "/stagekit:verify" }
+  ],
+  "drive": "auto"
+}
