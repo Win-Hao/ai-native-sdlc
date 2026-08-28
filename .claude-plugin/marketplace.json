@@ -1,17 +1,17 @@
 {
-  "name": "ai-native-sdlc",
+  "name": "win-hao",
   "owner": { "name": "Win-Hao" },
   "description": "The AI-native SDLC playbook as installable Claude Code tooling: six stages, an artifact chain, and deterministic gates.",
   "version": "1.1.0",
   "plugins": [
     {
-      "name": "sdlc",
-      "source": "./sdlc",
-      "displayName": "AI-Native SDLC",
+      "name": "stagekit",
+      "source": "./stagekit",
+      "displayName": "StageKit",
       "description": "Six-stage AI-native SDLC as an executable artifact chain: intent.md -> spec.md -> plan.md -> diff+tests -> PR review -> incident -> intent.md. Stage plays as skills, deterministic controls as hooks, scoped checks as subagents.",
       "version": "1.1.0",
       "category": "workflow",
-      "keywords": ["sdlc", "agentic", "governance", "intent", "spec", "plan", "evals", "review"],
+      "keywords": ["stagekit", "sdlc", "agentic", "governance", "intent", "spec", "plan", "evals", "review"],
       "license": "MIT",
       "homepage": "https://claude.com/blog/the-ai-native-sdlc-playbook"
     }

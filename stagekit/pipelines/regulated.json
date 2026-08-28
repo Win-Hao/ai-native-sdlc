@@ -1,0 +1,56 @@
+[
+  {
+    "id": "intent",
+    "artifact": "intent.md",
+    "done_when": "accepted",
+    "command": "/stagekit:intent",
+    "draft_hint": "Product owner reviews and sets status: accepted."
+  },
+  {
+    "id": "spec",
+    "artifact": "spec.md",
+    "done_when": "accepted",
+    "command": "/stagekit:spec",
+    "draft_hint": "Every flagged concern needs a named policy owner and a recorded resolution."
+  },
+  {
+    "id": "threat-model",
+    "artifact": "threat-model.md",
+    "done_when": "signed-off",
+    "command": "/threat-model",
+    "draft_hint": "Security owner reviews and sets status: signed-off."
+  },
+  {
+    "id": "plan",
+    "artifact": "plan.md",
+    "done_when": "approved",
+    "command": "/stagekit:plan",
+    "draft_hint": "Tech lead or architect approves anything the organization classes as higher risk."
+  },
+  {
+    "id": "build",
+    "artifact": "plan.md",
+    "done_when": "implemented",
+    "command": "/stagekit:build",
+    "draft_hint": null
+  },
+  {
+    "id": "verify",
+    "artifact": null,
+    "command": "/stagekit:verify"
+  },
+  {
+    "id": "review",
+    "artifact": "findings.md",
+    "done_when": "reviewed",
+    "command": "/stagekit:review",
+    "draft_hint": null
+  },
+  {
+    "id": "change-record",
+    "artifact": "change-record.md",
+    "done_when": "authorized",
+    "command": "/change-record",
+    "draft_hint": "Release manager authorizes before the production gate opens."
+  }
+]

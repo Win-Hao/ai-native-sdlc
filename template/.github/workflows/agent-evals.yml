@@ -4,7 +4,7 @@ name: Agent evals
 
 on:
   pull_request:
-    paths: ['CLAUDE.md', 'REVIEW.md', '.claude/**', '.sdlc/**', 'evals/**']
+    paths: ['CLAUDE.md', 'REVIEW.md', '.claude/**', '.stagekit/**', 'evals/**']
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:

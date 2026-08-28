@@ -1,0 +1,105 @@
+{
+  "_preset": "rust",
+  "_detect": [
+    "Cargo.toml"
+  ],
+  "artifact_dir": "stagekit",
+  "gates": {
+    "test_lock": {
+      "enabled": true,
+      "test_globs": [
+        "tests/**",
+        "**/tests/**",
+        "benches/**"
+      ]
+    },
+    "protected_paths": {
+      "enabled": true,
+      "paths": [
+        "**/target/**",
+        "**/generated/**",
+        "Cargo.lock",
+        ".github/workflows/**"
+      ]
+    },
+    "production_gate": {
+      "enabled": true,
+      "match": [
+        "deploy*prod",
+        "prod*deploy",
+        "kubectl*production",
+        "terraform apply",
+        "helm upgrade",
+        "fly deploy",
+        "shuttle deploy"
+      ],
+      "approval_env": "STAGEKIT_RELEASE_APPROVAL"
+    },
+    "irreversible": {
+      "enabled": true,
+      "match": [
+        "git push --force",
+        "git push -f",
+        "git reset --hard",
+        "git clean -fdx",
+        "rm -rf /",
+        "DROP TABLE",
+        "TRUNCATE",
+        "cargo publish"
+      ]
+    },
+    "plan_sync": {
+      "enabled": true,
+      "exempt": [
+        "CLAUDE.md",
+        "REVIEW.md",
+        "evals/**",
+        ".claude/**"
+      ]
+    }
+  },
+  "format_command": "rustfmt",
+  "pipeline": [
+    {
+      "id": "intent",
+      "artifact": "intent.md",
+      "done_when": "accepted",
+      "command": "/stagekit:intent",
+      "draft_hint": "Review it — set status: accepted to open the next stage, or reject it."
+    },
+    {
+      "id": "spec",
+      "artifact": "spec.md",
+      "done_when": "accepted",
+      "command": "/stagekit:spec",
+      "draft_hint": "Resolve its flagged concerns with their policy owners, then set status: accepted."
+    },
+    {
+      "id": "plan",
+      "artifact": "plan.md",
+      "done_when": "approved",
+      "command": "/stagekit:plan",
+      "draft_hint": "Interrogate the plan, then set status: approved."
+    },
+    {
+      "id": "build",
+      "artifact": "plan.md",
+      "done_when": "implemented",
+      "command": "/stagekit:build",
+      "draft_hint": null
+    },
+    {
+      "id": "verify",
+      "artifact": null,
+      "command": "/stagekit:verify"
+    },
+    {
+      "id": "review",
+      "artifact": "findings.md",
+      "done_when": "reviewed",
+      "command": "/stagekit:review",
+      "draft_hint": null
+    }
+  ],
+  "drive": "off"
+}

@@ -1,0 +1,21 @@
+# Control bands: detection stays deterministic; the model is invoked only once
+# a band is breached.
+metric: ci_test_failure_rate      # or post_deploy_5xx_rate / pr_cycle_time
+baseline: rolling_30d
+rules: western_electric           # catches slow drift as well as spikes
+
+tiers:
+  1sigma:
+    action: log                   # record only, no invocation
+  2sigma:
+    action: diagnose              # read-only diagnosis
+    tools: "Read,Grep,Bash(gh run view *)"
+  3sigma:
+    action: propose               # may act, but only through pre-approved routes
+    routes:
+      - pull_request              # open a PR into the review gate
+      - runbook:rollback-deploy   # trigger the pre-approved runbook
+
+output:
+  intent_dir: stagekit/               # the diagnosis is written as intent.md and re-enters Stage 1
+  triage_owner: <service owner>
