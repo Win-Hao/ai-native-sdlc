@@ -3,5 +3,5 @@ Order ids need to become date-scoped: `ord-YYYYMMDD-NNNN`, where YYYYMMDD is the
 Contract (tests will target exactly this):
 
 1. `placeOrder` mints ids in the new shape; `resetOrderIds()` clears all per-day counters.
-2. Everything that creates, parses, or reasons about order ids keeps working. In particular the audit report: `auditTrail` must flag missing sequence numbers *within* a day and must never report a gap *across* days. Its shape becomes `{ checked, gaps: [{ after, before, missing }] }` where `after` and `before` are the full order ids flanking the gap and `missing` is the count of ids missing between them.
-3. Update the tests to the new shape; everything must pass.
+2. Everything that creates, parses, or reasons about order ids must keep working — check the whole repo, not just where ids are minted. Anything that groups or compares ids must respect the day scoping: sequence continuity is a per-day notion now, and nothing may treat ids from different days as consecutive. Any gap report must carry the full order ids flanking the gap and the count of ids missing between them, as `{ checked, gaps: [{ after, before, missing }] }`.
+3. Update the tests accordingly; everything must pass.
