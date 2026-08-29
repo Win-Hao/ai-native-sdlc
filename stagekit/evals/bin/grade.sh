@@ -3,13 +3,13 @@
 # LLM judge with -j. Writes grading.json per run (skill-creator schema) and
 # eval_metadata.json per case.
 #
-#   bin/grade.sh [-i ITERATION] [-j] [eval-case ...]
+#   bin/grade.sh [-i ITERATION] [-j] [-f] [eval-case ...]   (-f regrades runs already graded)
 #
 # Env:  JUDGE_MODEL  judge model for -j (default haiku)
 set -u
 E="$(cd "$(dirname "$0")/.." && pwd)"
-ITER=1; JUDGE=0
-while getopts 'i:jh' o; do case $o in i) ITER=$OPTARG;; j) JUDGE=1;; *) sed -n '2,8p' "$0"; exit 0;; esac; done
+ITER=1; JUDGE=0; FORCE=0
+while getopts 'i:jfh' o; do case $o in i) ITER=$OPTARG;; j) JUDGE=1;; f) FORCE=1;; *) sed -n '2,8p' "$0"; exit 0;; esac; done
 shift $((OPTIND-1))
 WS="$E/workspace/iteration-$ITER"; [ -d "$WS" ] || { echo "no $WS" >&2; exit 1; }
 CASES=("$@"); [ ${#CASES[@]} -eq 0 ] && CASES=($(cd "$WS" && ls -d eval-* 2>/dev/null))
@@ -21,6 +21,9 @@ for c in "${CASES[@]}"; do
     '{eval_id:$id, eval_name:$name, prompt:$prompt, assertions:($t|split("\n")|map(select(length>0)))}' >"$WS/$c/eval_metadata.json"
   for D in "$WS/$c"/*/run-*; do
     [ -d "$D/workspace" ] || continue
+    if [ "$FORCE" = 0 ] && [ -f "$D/grading.json" ] && { [ "$JUDGE" = 0 ] || jq -e 'any(.expectations[]; .scope=="judge")' "$D/grading.json" >/dev/null 2>&1; }; then
+      echo "skip  $c/$(basename "$(dirname "$D")")/$(basename "$D") (graded)"; continue
+    fi
     echo "grade $c/$(basename "$(dirname "$D")")/$(basename "$D")"
     [ -f "$D/timing.json" ] || echo '{}' >"$D/timing.json"
     checks=$(cd "$D/workspace" && RUN_DIR="$D" bash "$E/$c/check.sh")
